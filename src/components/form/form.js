@@ -1,105 +1,85 @@
 import { useState} from "react"
 import React from "react"
-import  "./forms.css"
- function Btm(){
-      let[data,setData]=useState([])
-      let[login,setEmail]=useState("")
-      let[paswword,setPaswword]=useState("")
-      let[errorLogin,setErrorLogin]=useState("заполните поле login")
-      let[errorPaswword,setErrorPaswword]=useState("заполните поле paswword ")
-      let[tr,setTr]=useState(false)
-      let[trr,setTrr]=useState(false)
-      let[classLogin,setclassLogin]=useState("")
-      let[classPaswword,setclassPaswword]=useState("")
-      let[classOneBtn,setclassOneBtn]=useState("")
-      let[classTwoBtn,setclassTwoBtn]=useState("")
+import  "./form.css"
 
-      function onChangekEmail(event){
-        setEmail(event.target.value)
-          if(6<event.target.value.length&&event.target.value.length<12){
-            setTr(true)
-            setclassTwoBtn("btn")
+
+ function Form({setData}){
+    
+  let[email,setEmail]=useState("")
+  let[paswword,setPaswword]=useState("")
+  let[tr,setTr]=useState(false)
+  let[trr,setTrr]=useState(false)
+  let[classEmail,setclassEmail]=useState("")
+  let[classPaswword,setclassPaswword]=useState("")
   
 
-            setEmail(event.target.value) 
-            setclassLogin("ok")
-            setErrorLogin("готово")
-            
-            }
-          else{
-            setclassTwoBtn("")
-            setTr(false)
-            setclassLogin("error")
-            setErrorLogin(" 6 до 12 символов")
-        }
-    }
-      function onChangePaswword(event){
-        setPaswword(event.target.value.replace(/./g,"*"))
-          if(1<event.target.value.length&&event.target.value.length<6){
-            setclassOneBtn("btn")
-            setTrr(true)
-            setPaswword(event.target.value.replace(/./g,"*"))
-            setclassPaswword("ok")
-            setErrorPaswword("готово")
-          
-        }
-          else{
-            setTrr(false)
-            setclassPaswword("error")
-            setErrorPaswword("до 6 символов")
-            setclassOneBtn("")
-        }
-        
-    }
-      let newMaS=data.map((item)=>(
-        <div key={item.id}>
-                 <span >login:{item.login} paswword:   {item.paswword}</span>
-                
-             </div>
-        ))
-      function zaq(event){
-        event.preventDefault()
-          if(tr&&trr){
-            
-            let obj={
-                id:Date.now(), 
-                paswword:paswword,
-                login:login
-            }
-            setData([...data,obj])
-            setPaswword("") 
-            setEmail("")
-            setTrr(false)
-            setTrr(false)
-            setclassTwoBtn("")
-            
-        }
+  function onChangekEmail(event){
+  setEmail(event.target.value)
+  let pattern = /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+  if (pattern.test(event.target.value)){
+    setTr(true)
+    setclassEmail("ok")
+  }else{
+    setTr(false)
+    setclassEmail("error")
+  }                 
+  }
 
-          }
+  function onChangePaswword(event){
+  if(event.target.value.length<9){
+    setPaswword(event.target.value)
+    let patternn = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/i
+    if(patternn.test(event.target.value)){
+      setTrr(true)
+      setPaswword(event.target.value)
+      setclassPaswword("ok")
+    }else{
+      setTrr(false)
+      setclassPaswword("error")}
+    }
+  }
+
+  
+      
+  function rede(event){
+  event.preventDefault()
+    if(tr&&trr){
+      let obj={
+          id:Date.now(), 
+          paswword:paswword,
+          email:email
+    }
+      setData(obj)
+      setPaswword("") 
+      setEmail("")
+      setTrr(false)
+      setTrr(false)
+  }}
+      
        
-        
-     return(
-          <div>
-            <form>
-                <div>
-                  <input onChange={onChangekEmail} className={classLogin} value={login}  type="text" placeholder="введите login "/>
-                  <div>
-                      <span>{errorLogin}</span>
-                  </div>
-                  </div>
-                  <div>
-                      <input onChange={onChangePaswword} className={classPaswword}  value={paswword} type="text" placeholder="введите paswword "/>
-                  <div>
-                    <span>{errorPaswword}</span>
-                  </div>
-                </div>
-              
-                <button type="submit" className={classOneBtn+classTwoBtn} onClick={zaq} >Отправить</button>
-              </form>
-              <div>{newMaS}</div>
+  return(
+    <div>
+      <div >
+        <form>
+            <div>
+              <input onChange={onChangekEmail} className={classEmail} value={email}  type="text" placeholder="введите email "/>
             </div>
-      )
+            <div>
+              <input onChange={onChangePaswword} className={classPaswword}  value={paswword} type="text" placeholder="введите paswword "/>
+            </div>
+          <button type="submit" onClick={rede} >Отправить</button>
+          
+          
+        </form>
+                   
+      </div>  
+    </div>
+  )
       
   }
   
-export {Btm}
+ 
+  
+export {Form}
+
+
